@@ -1,0 +1,98 @@
+
+<div class="test-results-container">
+  <!-- Header Section -->
+  <div class="results-header">
+    <h1 class="page-title">My Test Results</h1>
+    <p class="page-subtitle">View your quiz performance and track your progress</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading your test results...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Results Table -->
+  <div *ngIf="!isLoading" class="results-content">
+    <!-- Empty State -->
+    <div *ngIf="dataSet.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i nz-icon nzType="file-text" nzTheme="outline"></i>
+      </div>
+      <h3 class="empty-title">No Test Results Found</h3>
+      <p class="empty-description">You haven't completed any tests yet. Start taking quizzes to see your results here!</p>
+      <button nz-button nzType="primary" routerLink="/user/dashboard">
+        <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+        Back to Dashboard
+      </button>
+    </div>
+
+    <!-- Results Table -->
+    <div *ngIf="dataSet.length > 0" class="table-container">
+      <nz-table #basicTable [nzData]="dataSet" [nzPageSize]="10" [nzShowPagination]="dataSet.length > 10">
+        <thead>
+          <tr>
+            <th nzWidth="30%">Test Name</th>
+            <th nzWidth="15%" nzAlign="center">Total Questions</th>
+            <th nzWidth="15%" nzAlign="center">Correct Answers</th>
+            <th nzWidth="15%" nzAlign="center">Score</th>
+            <th nzWidth="15%" nzAlign="center">Grade</th>
+            <th nzWidth="10%" nzAlign="center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; trackBy: trackByIndex">
+            <td>
+              <div class="test-name">
+                <i nz-icon nzType="file-text" nzTheme="outline"></i>
+                <span>{{data.testName || 'Unnamed Test'}}</span>
+              </div>
+            </td>
+            <td nzAlign="center">
+              <nz-tag nzColor="blue">{{data.totalQuestions || 0}}</nz-tag>
+            </td>
+            <td nzAlign="center">
+              <nz-tag nzColor="green">{{data.correctAnswers || 0}}</nz-tag>
+            </td>
+            <td nzAlign="center">
+              <div class="score-cell">
+                <span class="percentage" [style.color]="getScoreColor(data.percentage || 0)">
+                  {{data.percentage || 0}}%
+                </span>
+              </div>
+            </td>
+            <td nzAlign="center">
+              <nz-tag [nzColor]="getScoreColor(data.percentage || 0)">
+                {{getGrade(data.percentage || 0)}}
+              </nz-tag>
+            </td>
+            <td nzAlign="center">
+              <i nz-icon 
+                 [nzType]="(data.percentage || 0) >= 60 ? 'check-circle' : 'close-circle'" 
+                 [nzTheme]="'fill'"
+                 [style.color]="(data.percentage || 0) >= 60 ? '#52c41a' : '#ff4d4f'">
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <!-- Summary Stats -->
+      <div class="summary-stats">
+        <div class="stat-card">
+          <div class="stat-value">{{dataSet.length}}</div>
+          <div class="stat-label">Tests Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getAverageScore()}}</div>
+          <div class="stat-label">Average Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getPassedTests()}}</div>
+          <div class="stat-label">Tests Passed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

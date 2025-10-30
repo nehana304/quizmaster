@@ -1,0 +1,155 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Left side - Form -->
+    <div class="login-form-container">
+      <div class="login-form">
+        <h1>Create an Account</h1>
+        <p class="subtitle">Join our community and start your journey</p>
+
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="nameErrorTpl">
+              <nz-input-group nzSize="large" nzPrefixIcon="user">
+                <input type="text" nz-input formControlName="name" placeholder="Full Name" />
+              </nz-input-group>
+              <ng-template #nameErrorTpl let-control>
+                @if (validateForm.get('name')?.errors?.['required']) {
+                  Please enter your name
+                } @else if (validateForm.get('name')?.errors?.['minlength']) {
+                  Name must be at least 3 characters
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="emailErrorTpl">
+              <nz-input-group nzSize="large" nzPrefixIcon="mail">
+                <input type="email" nz-input formControlName="email" placeholder="Email Address" />
+              </nz-input-group>
+              <ng-template #emailErrorTpl let-control>
+                @if (validateForm.get('email')?.errors?.['required']) {
+                  Please enter your email
+                } @else if (validateForm.get('email')?.errors?.['email']) {
+                  Please enter a valid email
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="passwordErrorTpl">
+              <nz-input-group nzSize="large" nzPrefixIcon="lock">
+                <input 
+                  [type]="passwordVisible ? 'text' : 'password'" 
+                  nz-input 
+                  formControlName="password" 
+                  placeholder="Password" 
+                />
+                <span 
+                  nz-icon 
+                  [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                  (click)="togglePasswordVisibility()"
+                  class="password-toggle"
+                  nzTheme="outline">
+                </span>
+              </nz-input-group>
+              <ng-template #passwordErrorTpl let-control>
+                @if (validateForm.get('password')?.errors?.['required']) {
+                  Please enter your password
+                } @else if (validateForm.get('password')?.errors?.['minlength']) {
+                  Password must be at least 6 characters
+                }
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="roleErrorTpl">
+              <nz-select 
+                formControlName="role" 
+                nzSize="large"
+                nzPlaceHolder="Select Account Type">
+                <nz-option nzValue="USER" nzLabel="User - Take quizzes" nzCustomContent>
+                  <div class="role-option">
+                    <i nz-icon nzType="user" nzTheme="outline"></i>
+                    <div class="role-details">
+                      <div class="role-title">User</div>
+                      <div class="role-description">Take quizzes and track your progress</div>
+                    </div>
+                  </div>
+                </nz-option>
+                <nz-option nzValue="CREATOR" nzLabel="Admin - Create & manage quizzes" nzCustomContent>
+                  <div class="role-option">
+                    <i nz-icon nzType="edit" nzTheme="outline"></i>
+                    <div class="role-details">
+                      <div class="role-title">Admin</div>
+                      <div class="role-description">Create and manage quizzes, view all results</div>
+                    </div>
+                  </div>
+                </nz-option>
+              </nz-select>
+              <ng-template #roleErrorTpl>
+                Please select an account type
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control [nzErrorTip]="termsErrorTpl">
+              <label nz-checkbox formControlName="agreeTerms">
+                I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+              </label>
+              <ng-template #termsErrorTpl>
+                You must accept the terms and conditions
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+
+          <button 
+            nz-button 
+            nzType="primary" 
+            nzSize="large" 
+            nzBlock 
+            [nzLoading]="isLoading"
+            [disabled]="validateForm.invalid">
+            Create Account
+          </button>
+
+          <div class="register-now">
+            Already have an account? <a routerLink="/auth/login">Sign in</a>
+          </div>
+
+          <!-- System Status (only show if there are issues) -->
+          <div *ngIf="showSystemStatus" class="system-status">
+            <nz-alert 
+              nzType="warning" 
+              nzMessage="System Initialization Required"
+              nzDescription="The system needs to be initialized. Click the button below to set up required data."
+              nzShowIcon>
+            </nz-alert>
+            <button 
+              nz-button 
+              nzType="default" 
+              nzBlock 
+              [nzLoading]="isInitializing"
+              (click)="initializeSystem()"
+              style="margin-top: 1rem;">
+              <i nz-icon nzType="setting" nzTheme="outline"></i>
+              Initialize System
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right side - Illustration -->
+    <div class="auth-illustration">
+      <div class="illustration-content">
+        <h1>Welcome to QuizMaster</h1>
+        <p>Join thousands of users who are already creating and taking quizzes on our platform. Create, share, and learn in a fun and interactive way.</p>
+        <img src="assets/images/auth/signup-illustration.svg" alt="Sign up illustration" class="illustration-img">
+      </div>
+    </div>
+  </div>
+</div>

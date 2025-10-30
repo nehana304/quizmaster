@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="400" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="250" cy="200" r="180" fill="#F0F4FF" fill-opacity="0.5"/>
+  
+  <!-- Main Illustration -->
+  <g transform="translate(100, 100)">
+    <!-- Laptop -->
+    <rect x="100" y="60" width="200" height="140" rx="8" fill="#4F46E5"/>
+    <rect x="120" y="80" width="160" height="100" rx="4" fill="#1E1B4B"/>
+    <rect x="150" y="200" width="100" height="10" rx="4" fill="#4F46E5"/>
+    <rect x="170" y="210" width="60" height="10" rx="4" fill="#4F46E5" fill-opacity="0.5"/>
+    
+    <!-- User Icon -->
+    <circle cx="220" cy="40" r="30" fill="#7C3AED"/>
+    <circle cx="220" cy="35" r="10" fill="#F0F4FF"/>
+    <path d="M205 55C205 47.8203 210.82 42 218 42C225.18 42 231 47.8203 231 55C231 62.1797 225.18 68 218 68C210.82 68 205 62.1797 205 55Z" fill="#F0F4FF"/>
+    
+    <!-- Shield Icon -->
+    <path d="M240 20C240 17.7909 241.791 16 244 16H276C278.209 16 280 17.7909 280 20V60C280 72.1503 267.451 81.735 244.947 91.658C243.684 92.214 242.316 92.214 241.053 91.658C218.549 81.735 206 72.1503 206 60V20C206 17.7909 207.791 16 210 16H242C244.209 16 246 17.7909 246 20V40C246 42.2091 247.791 44 250 44H270C272.209 44 274 42.2091 274 40V20Z" fill="#7C3AED"/>
+    <path d="M260 28C260 29.1046 259.105 30 258 30C256.895 30 256 29.1046 256 28C256 26.8954 256.895 26 258 26C259.105 26 260 26.8954 260 28Z" fill="#F0F4FF"/>
+    
+    <!-- Lock Icon -->
+    <path d="M140 120C140 117.791 141.791 116 144 116H156C158.209 116 160 117.791 160 120V140C160 142.209 158.209 144 156 144H144C141.791 144 140 142.209 140 140V120Z" fill="#4F46E5"/>
+    <rect x="148" y="128" width="4" height="8" rx="2" fill="#F0F4FF"/>
+    <path d="M144 120H156V118C156 115.791 154.209 114 152 114H148C145.791 114 144 115.791 144 118V120Z" fill="#7C3AED"/>
+    
+    <!-- Document Icon -->
+    <path d="M280 120C280 117.791 281.791 116 284 116H296C298.209 116 300 117.791 300 120V160C300 162.209 298.209 164 296 164H284C281.791 164 280 162.209 280 160V120Z" fill="#7C3AED"/>
+    <rect x="288" y="128" width="24" height="2" rx="1" fill="#F0F4FF"/>
+    <rect x="288" y="136" width="16" height="2" rx="1" fill="#F0F4FF"/>
+    <rect x="288" y="144" width="20" height="2" rx="1" fill="#F0F4FF"/>
+    <rect x="288" y="152" width="12" height="2" rx="1" fill="#F0F4FF"/>
+    
+    <!-- Checkmark -->
+    <path d="M200 200C200 200 210 220 230 200C250 180 280 140 280 140" stroke="#4F46E5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Decorative Elements -->
+  <circle cx="100" cy="100" r="8" fill="#7C3AED" fill-opacity="0.3"/>
+  <circle cx="400" cy="80" r="6" fill="#4F46E5" fill-opacity="0.4"/>
+  <circle cx="80" cy="300" r="10" fill="#4F46E5" fill-opacity="0.2"/>
+  <circle cx="420" cy="320" r="12" fill="#7C3AED" fill-opacity="0.2"/>
+</svg>

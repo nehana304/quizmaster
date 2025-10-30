@@ -1,0 +1,143 @@
+
+<div class="admin-dashboard-container fade-in">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="dashboard-title">Admin Dashboard</h1>
+        <p class="dashboard-subtitle">Manage your tests, questions, and monitor quiz activities</p>
+        <div class="info-banner">
+          <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+          <span>You can only view and manage tests that you have created</span>
+          <app-session-status></app-session-status>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button nz-button nzType="primary" routerLink="/admin/create-test">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>
+          Create Test
+        </button>
+        <button nz-button nzType="default" routerLink="/admin/view-test-results">
+          <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
+          View Test Results
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading tests...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Tests Grid -->
+  <div *ngIf="!isLoading" class="tests-container">
+    <div *ngIf="tests.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i nz-icon nzType="file-text" nzTheme="outline"></i>
+      </div>
+      <h3 class="empty-title">No Tests Found</h3>
+      <p class="empty-description">Create your first test to get started</p>
+      <button nz-button nzType="primary" routerLink="/admin/create-test">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        Create Test
+      </button>
+    </div>
+
+    <div *ngIf="tests.length > 0" class="tests-grid">
+      <div *ngFor="let test of tests; trackBy: trackByTestId" class="test-card scale-in">
+        <div class="test-card-header">
+          <div class="test-title-section">
+            <h3 class="test-title">{{test.title}}</h3>
+            <nz-tag [nzColor]="getStatusColor(test.status || 'ACTIVE')">
+              {{getStatusText(test.status || 'ACTIVE')}}
+            </nz-tag>
+          </div>
+        </div>
+        
+        <div class="test-card-body">
+          <p class="test-description">{{test.description}}</p>
+          
+          <div class="test-meta">
+            <div class="meta-item">
+              <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+              <span>{{getFormattedTime(test.time)}}</span>
+            </div>
+            <div class="meta-item">
+              <i nz-icon nzType="question-circle" nzTheme="outline"></i>
+              <span>{{test.questions?.length || 0}} Questions</span>
+            </div>
+            <div class="meta-item test-code-item">
+              <i nz-icon nzType="key" nzTheme="outline"></i>
+              <span class="test-code">{{test.testCode || 'N/A'}}</span>
+              <button *ngIf="test.testCode" 
+                      nz-button 
+                      nzType="text" 
+                      nzSize="small" 
+                      (click)="copyTestCode(test.testCode)"
+                      nz-tooltip="Copy test code">
+                <i nz-icon nzType="copy" nzTheme="outline"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="test-card-actions">
+          <div class="primary-actions">
+            <button nz-button nzType="primary" routerLink="/admin/view-test/{{test.id}}">
+              <i nz-icon nzType="file-text" nzTheme="outline"></i>
+              View Questions
+            </button>
+            <button nz-button nzType="default" routerLink="/admin/add-question/{{test.id}}">
+              <i nz-icon nzType="plus" nzTheme="outline"></i>
+              Add Question
+            </button>
+            <button nz-button nzType="default" routerLink="/admin/leaderboard/{{test.id}}">
+              <i nz-icon nzType="trophy" nzTheme="outline"></i>
+              Leaderboard
+            </button>
+          </div>
+          
+          <div class="status-actions">
+            <button *ngIf="test.status !== 'CANCELLED'" 
+                    nz-button 
+                    nzType="primary" 
+                    nzDanger
+                    nz-popconfirm
+                    nzPopconfirmTitle="Are you sure you want to delete this test? Results will be preserved."
+                    nzPopconfirmPlacement="top"
+                    (nzOnConfirm)="cancelTest(test.id)">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+              Delete Test
+            </button>
+            
+            <div *ngIf="test.status === 'CANCELLED'" class="cancelled-actions">
+              <button nz-button 
+                      nzType="primary"
+                      nz-popconfirm
+                      nzPopconfirmTitle="Are you sure you want to activate this test?"
+                      nzPopconfirmPlacement="top"
+                      (nzOnConfirm)="activateTest(test.id)">
+                <i nz-icon nzType="play-circle" nzTheme="outline"></i>
+                Activate Test
+              </button>
+              
+              <button nz-button 
+                      nzType="primary" 
+                      nzDanger
+                      nz-popconfirm
+                      nzPopconfirmTitle="Are you sure you want to permanently remove this test? This action cannot be undone!"
+                      nzPopconfirmPlacement="top"
+                      (nzOnConfirm)="permanentlyRemoveTest(test.id)">
+                <i nz-icon nzType="delete" nzTheme="fill"></i>
+                Remove Permanently
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

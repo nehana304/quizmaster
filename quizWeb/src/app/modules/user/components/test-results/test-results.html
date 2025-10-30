@@ -1,0 +1,162 @@
+<div class="test-results-container fade-in">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading your results...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Results Content -->
+  <div *ngIf="!isLoading" class="results-content">
+    <!-- Test Result Card -->
+    <div class="result-card scale-in" style="animation-delay: 0.1s;" *ngIf="testResult">
+      <div class="result-header">
+        <div class="result-icon" [style.color]="getScoreColor(testResult.percentage)">
+          <i nz-icon [nzType]="testResult.percentage >= 60 ? 'trophy' : 'clock-circle'" nzTheme="outline"></i>
+        </div>
+        <h1 class="result-title">Test Completed!</h1>
+        <p class="result-message">{{getPerformanceMessage()}}</p>
+      </div>
+
+      <div class="result-stats">
+        <div class="stat-item">
+          <div class="stat-value" [style.color]="getScoreColor(testResult.percentage)">
+            {{testResult.percentage}}%
+          </div>
+          <div class="stat-label">Your Score</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-value">{{testResult.correctAnswers}}/{{testResult.totalQuestions}}</div>
+          <div class="stat-label">Correct Answers</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-value" [style.color]="getScoreColor(testResult.percentage)">
+            {{getGrade(testResult.percentage)}}
+          </div>
+          <div class="stat-label">Grade</div>
+        </div>
+        
+        <div class="stat-item" *ngIf="currentUserRank > 0">
+          <div class="stat-value">#{{currentUserRank}}</div>
+          <div class="stat-label">Your Rank</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="result-actions">
+        <button nz-button nzType="primary" (click)="retakeTest()">
+          <i nz-icon nzType="redo" nzTheme="outline"></i>
+          Retake Test
+        </button>
+        <button nz-button nzType="default" (click)="shareResult()">
+          <i nz-icon nzType="share-alt" nzTheme="outline"></i>
+          Share Result
+        </button>
+        <button nz-button nzType="default" (click)="viewAllResults()">
+          <i nz-icon nzType="history" nzTheme="outline"></i>
+          View All Results
+        </button>
+        <button nz-button nzType="dashed" (click)="goToDashboard()">
+          <i nz-icon nzType="home" nzTheme="outline"></i>
+          Dashboard
+        </button>
+      </div>
+    </div>
+
+    <!-- Leaderboard Section -->
+    <div class="leaderboard-section slide-in" style="animation-delay: 0.3s;" *ngIf="showLeaderboard">
+      <div class="leaderboard-header">
+        <h2 class="leaderboard-title">
+          <i nz-icon nzType="trophy" nzTheme="outline"></i>
+          Leaderboard
+        </h2>
+        <p class="leaderboard-subtitle">See how you rank against other participants</p>
+      </div>
+
+      <!-- Top 3 Podium -->
+      <div class="podium-section" *ngIf="leaderboardData.length >= 3">
+        <h3 class="podium-title">🏆 Top Performers</h3>
+        <div class="podium">
+          <!-- 2nd Place -->
+          <div class="podium-item second" *ngIf="leaderboardData[1]">
+            <div class="podium-avatar">
+              <nz-avatar nzSize="large" [nzText]="leaderboardData[1].userName?.charAt(0) || 'U'"></nz-avatar>
+            </div>
+            <div class="podium-info">
+              <div class="podium-badge">🥈</div>
+              <div class="podium-name" [class.current-user]="leaderboardData[1].isCurrentUser">
+                {{leaderboardData[1].userName}}
+              </div>
+              <div class="podium-score">{{leaderboardData[1].percentage}}%</div>
+            </div>
+            <div class="podium-bar second-bar"></div>
+          </div>
+
+          <!-- 1st Place -->
+          <div class="podium-item first" *ngIf="leaderboardData[0]">
+            <div class="podium-avatar">
+              <nz-avatar nzSize="large" [nzText]="leaderboardData[0].userName?.charAt(0) || 'U'"></nz-avatar>
+            </div>
+            <div class="podium-info">
+              <div class="podium-badge">🥇</div>
+              <div class="podium-name" [class.current-user]="leaderboardData[0].isCurrentUser">
+                {{leaderboardData[0].userName}}
+              </div>
+              <div class="podium-score">{{leaderboardData[0].percentage}}%</div>
+            </div>
+            <div class="podium-bar first-bar"></div>
+          </div>
+
+          <!-- 3rd Place -->
+          <div class="podium-item third" *ngIf="leaderboardData[2]">
+            <div class="podium-avatar">
+              <nz-avatar nzSize="large" [nzText]="leaderboardData[2].userName?.charAt(0) || 'U'"></nz-avatar>
+            </div>
+            <div class="podium-info">
+              <div class="podium-badge">🥉</div>
+              <div class="podium-name" [class.current-user]="leaderboardData[2].isCurrentUser">
+                {{leaderboardData[2].userName}}
+              </div>
+              <div class="podium-score">{{leaderboardData[2].percentage}}%</div>
+            </div>
+            <div class="podium-bar third-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Rankings -->
+      <div class="rankings-section">
+        <h3>Complete Rankings</h3>
+        <div class="rankings-list">
+          <div class="ranking-item" *ngFor="let item of leaderboardData" 
+               [class.current-user]="item.isCurrentUser">
+            <div class="rank-info">
+              <span class="rank-number">{{item.badge}} {{item.rank}}</span>
+            </div>
+            <div class="user-info">
+              <nz-avatar nzSize="small" [nzText]="item.userName?.charAt(0) || 'U'"></nz-avatar>
+              <span class="user-name">{{item.userName}}</span>
+              <span class="you-badge" *ngIf="item.isCurrentUser">YOU</span>
+            </div>
+            <div class="score-info">
+              <span class="score-percentage" [style.color]="getScoreColor(item.percentage)">
+                {{item.percentage}}%
+              </span>
+              <div class="progress-bar">
+                <div class="progress-fill" 
+                     [style.width.%]="item.percentage"
+                     [style.background-color]="getScoreColor(item.percentage)">
+                </div>
+              </div>
+            </div>
+            <div class="answers-info">
+              <span class="fraction">{{item.correctAnswers}}/{{item.totalQuestions}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo -->
+    <a routerLink="/" class="logo">
+      <img src="assets/images/logo.svg" alt="QuizMaster" class="logo-img">
+      <span class="logo-text">QuizMaster</span>
+    </a>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+      <i nz-icon [nzType]="isMobileMenuOpen ? 'close' : 'menu'" nzTheme="outline"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="nav-menu" [class.active]="isMobileMenuOpen">
+      <a routerLink="/" routerLinkActive="active" class="nav-link" (click)="closeMobileMenu()">
+        <i nz-icon nzType="home" nzTheme="outline"></i>
+        <span>Home</span>
+      </a>
+
+      @if (isLoggedIn) {
+        @if (isAdmin) {
+          <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-link" (click)="closeMobileMenu()">
+            <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+            <span>Dashboard</span>
+          </a>
+          <a routerLink="/admin/tests" routerLinkActive="active" class="nav-link" (click)="closeMobileMenu()">
+            <i nz-icon nzType="file-text" nzTheme="outline"></i>
+            <span>Tests</span>
+          </a>
+        } @else {
+          <a routerLink="/user/dashboard" routerLinkActive="active" class="nav-link" (click)="closeMobileMenu()">
+            <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+            <span>Dashboard</span>
+          </a>
+          <a routerLink="/user/tests" routerLinkActive="active" class="nav-link" (click)="closeMobileMenu()">
+            <i nz-icon nzType="file-text" nzTheme="outline"></i>
+            <span>My Tests</span>
+          </a>
+        }
+      }
+    </nav>
+
+    <!-- User Actions -->
+    <div class="user-actions" [class.active]="isMobileMenuOpen">
+      @if (isLoggedIn) {
+        <div nz-dropdown nzPlacement="bottomRight" [nzDropdownMenu]="userMenu">
+          <div class="user-dropdown">
+            <nz-avatar [nzText]="userInitials" nzSize="default" class="user-avatar" [ngStyle]="{'background-color': 'var(--primary-color)'}"></nz-avatar>
+            <span class="user-name">{{ userName }}</span>
+            <i nz-icon nzType="down" nzTheme="outline"></i>
+          </div>
+        </div>
+        <nz-dropdown-menu #userMenu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="closeMobileMenu()">
+              <a routerLink="/profile" class="menu-item">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+            <li nz-menu-item (click)="closeMobileMenu()">
+              <a routerLink="/settings" class="menu-item">
+                <i nz-icon nzType="setting" nzTheme="outline"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li nz-menu-divider></li>
+            <li nz-menu-item (click)="logout(); closeMobileMenu()" class="menu-item-danger">
+              <i nz-icon nzType="logout" nzTheme="outline"></i>
+              <span>Logout</span>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      } @else {
+        <div class="auth-buttons">
+          <a routerLink="/auth/login" class="btn btn-outline" (click)="closeMobileMenu()">
+            <i nz-icon nzType="login" nzTheme="outline"></i>
+            <span>Sign In</span>
+          </a>
+          <a routerLink="/auth/register" class="btn btn-primary" (click)="closeMobileMenu()">
+            <i nz-icon nzType="user-add" nzTheme="outline"></i>
+            <span>Sign Up</span>
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</header>

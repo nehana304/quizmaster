@@ -1,0 +1,85 @@
+<!-- Guest Header -->
+<div *ngIf="!isUserLoggedIn && !isAdminLoggedIn">
+  <nz-header class="main-header">
+    <div class="brand">
+      <a routerLink="/login" class="brand-link">
+        <div class="brand-icon">Q</div>
+        QuizMaster
+      </a>
+    </div>
+    
+    <div class="nav-links">
+      <a routerLink="/register" routerLinkActive="active">
+        <i nz-icon nzType="user-add" nzTheme="outline"></i>
+        Sign Up
+      </a>
+      <a routerLink="/login" routerLinkActive="active">
+        <i nz-icon nzType="login" nzTheme="outline"></i>
+        Login
+      </a>
+    </div>
+  </nz-header>
+</div>
+
+<!-- Admin Header -->
+<div *ngIf="isAdminLoggedIn">
+  <nz-header class="main-header admin-header">
+    <div class="brand">
+      <a routerLink="/admin/dashboard" class="brand-link">
+        <div class="brand-icon">Q</div>
+        QuizMaster Admin
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">
+        <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+        Dashboard
+      </a>
+      <a routerLink="/admin/create-test" routerLinkActive="active">
+        <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+        Create Test
+      </a>
+      <a routerLink="/admin/view-test-results" routerLinkActive="active">
+        <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
+        Results
+      </a>
+      <a (click)="onLogout()" style="cursor: pointer;" data-action="logout">
+        <i nz-icon nzType="logout" nzTheme="outline"></i>
+        Logout
+      </a>
+      <div class="user-avatar">A</div>
+    </div>
+  </nz-header>
+</div>
+
+<!-- User Header -->
+<div *ngIf="isUserLoggedIn">
+  <nz-header class="main-header">
+    <div class="brand">
+      <a routerLink="/user/dashboard" class="brand-link">
+        <div class="brand-icon">Q</div>
+        QuizMaster
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="/user/dashboard" routerLinkActive="active">
+        <i nz-icon nzType="home" nzTheme="outline"></i>
+        Dashboard
+      </a>
+      <a routerLink="/user/view-test-results" routerLinkActive="active">
+        <i nz-icon nzType="trophy" nzTheme="outline"></i>
+        My Results
+      </a>
+      <a (click)="onLogout()" style="cursor: pointer;" data-action="logout">
+        <i nz-icon nzType="logout" nzTheme="outline"></i>
+        Logout
+      </a>
+      <div class="user-avatar">U</div>
+    </div>
+  </nz-header>
+</div>
+
+
+<router-outlet></router-outlet>

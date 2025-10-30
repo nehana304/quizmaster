@@ -1,0 +1,423 @@
+/* Header Styles */
+:host {
+  --header-height: 64px;
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --bg-white: #ffffff;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --transition: all 0.2s ease-in-out;
+  --radius: 0.5rem;
+}
+
+.header {
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  transition: var(--transition);
+}
+
+.header-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  z-index: 10;
+}
+
+.logo-img {
+  height: 32px;
+  margin-right: 0.75rem;
+}
+
+.logo-text {
+  background: linear-gradient(135deg, var(--primary-color), #7c3aed);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  z-index: 1001;
+  padding: 0.5rem;
+  margin-left: auto;
+  margin-right: -0.5rem;
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 2rem;
+  transition: var(--transition);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+
+.nav-link i {
+  font-size: 1.1em;
+  transition: var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--primary-color);
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.nav-link.active {
+  font-weight: 600;
+}
+
+/* User Actions */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  height: 40px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.btn i {
+  font-size: 1rem;
+}
+
+.btn-outline {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background-color: rgba(79, 70, 229, 0.05);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* User Dropdown */
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.user-dropdown:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-color: var(--border-color);
+}
+
+.user-avatar {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+
+/* Dropdown Menu */
+:host ::ng-deep .ant-dropdown-menu {
+  padding: 0.5rem 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  min-width: 200px;
+}
+
+:host ::ng-deep .ant-dropdown-menu-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.9375rem;
+  transition: var(--transition);
+}
+
+:host ::ng-deep .ant-dropdown-menu-item i {
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+:host ::ng-deep .ant-dropdown-menu-item:hover {
+  background-color: rgba(79, 70, 229, 0.05);
+  color: var(--primary-color);
+}
+
+:host ::ng-deep .ant-dropdown-menu-item.menu-item-danger:hover {
+  color: #e53e3e;
+  background-color: rgba(229, 62, 62, 0.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .header {
+    padding: 0 1rem;
+  }
+  
+  .nav-menu {
+    gap: 0.25rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .nav-menu,
+  .user-actions {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    flex-direction: column;
+    padding: 1rem;
+    margin: 0;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+    z-index: 999;
+  }
+  
+  .nav-menu.active,
+  .user-actions.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+  
+  .nav-menu {
+    padding-top: 1.5rem;
+    gap: 0.5rem;
+  }
+  
+  .nav-link {
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+  }
+  
+  .user-actions {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    align-items: stretch;
+  }
+  
+  .auth-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .user-dropdown {
+    justify-content: center;
+    padding: 0.75rem;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+:host ::ng-deep .ant-dropdown {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+}
+
+/* User Dropdown */
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.user-dropdown:hover {
+  background-color: var(--bg-light);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  font-weight: 600;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Dropdown Menu */
+:host ::ng-deep .ant-dropdown-menu {
+  padding: 0.5rem 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  min-width: 200px;
+}
+
+:host ::ng-deep .ant-dropdown-menu-item {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: var(--transition);
+}
+
+:host ::ng-deep .ant-dropdown-menu-item:hover {
+  background-color: var(--bg-light);
+}
+
+:host ::ng-deep .ant-dropdown-menu-item i {
+  font-size: 1rem;
+}
+
+:host ::ng-deep .ant-dropdown-menu-item-danger {
+  color: var(--danger-color);
+}
+
+:host ::ng-deep .ant-dropdown-menu-item-danger:hover {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .nav-menu {
+    display: none;
+  }
+  
+  .header-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-text {
+    display: none;
+  }
+  
+  .user-name {
+    display: none;
+  }
+  
+  .btn span {
+    display: none;
+  }
+  
+  .btn i {
+    margin: 0;
+  }
+}

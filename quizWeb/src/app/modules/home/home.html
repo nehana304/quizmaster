@@ -1,0 +1,149 @@
+<div class="home-container fade-in">
+  <!-- Hero Section -->
+  <div class="hero-section slide-in">
+    <div class="hero-content">
+      <h1 class="hero-title float-animation">Welcome to QuizMaster</h1>
+      <p class="hero-subtitle slide-in-left" style="animation-delay: 0.3s;">
+        Test your knowledge, challenge yourself, and learn something new every day with our interactive quiz platform.
+      </p>
+      <div class="hero-actions slide-in-right" style="animation-delay: 0.6s;">
+        <!-- Show different buttons based on login status -->
+        <ng-container *ngIf="!isLoggedIn()">
+          <button nz-button nzType="primary" nzSize="large" (click)="navigateToLogin()" class="bounce-hover">
+            <i nz-icon nzType="login" nzTheme="outline"></i>
+            Get Started
+          </button>
+          <button nz-button nzType="default" nzSize="large" (click)="navigateToRegister()" class="bounce-hover">
+            <i nz-icon nzType="user-add" nzTheme="outline"></i>
+            Sign Up
+          </button>
+        </ng-container>
+        
+        <ng-container *ngIf="isLoggedIn()">
+          <button nz-button nzType="primary" nzSize="large" (click)="navigateToLogin()" class="bounce-hover">
+            <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+            Go to Dashboard
+          </button>
+          <button nz-button nzType="default" nzSize="large" (click)="logout()" class="bounce-hover">
+            <i nz-icon nzType="logout" nzTheme="outline"></i>
+            Logout & Login as Different User
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics Section -->
+  <div class="stats-section slide-in" style="animation-delay: 0.9s;">
+    <h2 class="section-title pulse-animation">Platform Statistics</h2>
+    <div class="stats-grid">
+      <div class="stat-card scale-in" style="animation-delay: 1.2s;">
+        <div class="stat-icon primary">
+          <i nz-icon nzType="file-text" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getStatistics().totalTests}}</div>
+        <div class="stat-label">Available Tests</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon secondary">
+          <i nz-icon nzType="user" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getStatistics().activeUsers}}</div>
+        <div class="stat-label">Active Users</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon success">
+          <i nz-icon nzType="check-circle" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getStatistics().completedTests}}</div>
+        <div class="stat-label">Tests Completed</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon warning">
+          <i nz-icon nzType="trophy" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getStatistics().averageScore}}%</div>
+        <div class="stat-label">Average Score</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <h2 class="section-title">Why Choose QuizMaster?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+        </div>
+        <h3 class="feature-title">Timed Quizzes</h3>
+        <p class="feature-description">
+          Challenge yourself with time-limited quizzes that test your knowledge under pressure.
+        </p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
+        </div>
+        <h3 class="feature-title">Detailed Analytics</h3>
+        <p class="feature-description">
+          Track your progress with comprehensive analytics and performance insights.
+        </p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i nz-icon nzType="team" nzTheme="outline"></i>
+        </div>
+        <h3 class="feature-title">Multiple Categories</h3>
+        <p class="feature-description">
+          Explore quizzes across various subjects and difficulty levels.
+        </p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i nz-icon nzType="safety-certificate" nzTheme="outline"></i>
+        </div>
+        <h3 class="feature-title">Secure Platform</h3>
+        <p class="feature-description">
+          Your data is safe with our secure and reliable quiz platform.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Access Section -->
+  <div class="quick-access-section">
+    <h2 class="section-title">Quick Access</h2>
+    <div class="access-cards">
+      <div class="access-card user-card" (click)="navigateToLogin()">
+        <div class="access-icon">
+          <i nz-icon nzType="user" nzTheme="outline"></i>
+        </div>
+        <h3 class="access-title">Student Portal</h3>
+        <p class="access-description">Take quizzes, view results, and track your progress</p>
+        <div class="access-action">
+          <span>Login as Student</span>
+          <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+        </div>
+      </div>
+      
+      <div class="access-card admin-card" (click)="navigateToLogin()">
+        <div class="access-icon">
+          <i nz-icon nzType="setting" nzTheme="outline"></i>
+        </div>
+        <h3 class="access-title">Admin Portal</h3>
+        <p class="access-description">Create tests, manage users, and view analytics</p>
+        <div class="access-action">
+          <span>Login as Admin</span>
+          <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

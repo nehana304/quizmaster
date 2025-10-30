@@ -1,0 +1,129 @@
+<div class="view-test-container">
+  <!-- Header Section -->
+  <div class="test-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="test-title">{{testData.title || 'Test Preview'}}</h1>
+        <p class="test-subtitle">Review test structure and questions</p>
+      </div>
+      <div class="header-actions">
+        <button nz-button nzType="default" routerLink="/admin/dashboard">
+          <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+          Back to Dashboard
+        </button>
+        <button nz-button nzType="primary" routerLink="/admin/add-question/{{testId}}">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>
+          Add Question
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Info Section -->
+  <div class="test-info-card">
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Test Title</div>
+        <div class="info-value">{{testData.title || 'N/A'}}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Description</div>
+        <div class="info-value">{{testData.description || 'No description'}}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Duration</div>
+        <div class="info-value">{{getFormattedTime(testData.time || 0)}}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Total Questions</div>
+        <div class="info-value">{{questions.length}}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Status</div>
+        <div class="info-value">
+          <nz-tag [nzColor]="testData.status === 'CANCELLED' ? '#ff4d4f' : '#52c41a'">
+            {{testData.status === 'CANCELLED' ? 'Cancelled' : 'Active'}}
+          </nz-tag>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading test details...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Questions Section -->
+  <div *ngIf="!isLoading" class="questions-section">
+    <div class="section-header">
+      <h2 class="section-title">Test Questions</h2>
+      <p class="section-subtitle">Preview of all questions in this test</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="questions.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i nz-icon nzType="question-circle" nzTheme="outline"></i>
+      </div>
+      <h3 class="empty-title">No Questions Added</h3>
+      <p class="empty-description">This test doesn't have any questions yet. Add questions to make it available for students.</p>
+      <button nz-button nzType="primary" routerLink="/admin/add-question/{{testId}}">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        Add First Question
+      </button>
+    </div>
+
+    <!-- Questions List -->
+    <div *ngIf="questions.length > 0" class="questions-container">
+      <div *ngFor="let question of questions; let i = index; trackBy: trackByQuestionId" class="question-card">
+        <div class="question-header">
+          <div class="question-number">Q{{i + 1}}</div>
+          <div class="question-actions">
+            <nz-tag nzColor="blue">{{question.correctOption}}</nz-tag>
+          </div>
+        </div>
+        
+        <div class="question-content">
+          <h3 class="question-text">{{question.content}}</h3>
+          
+          <div class="options-container">
+            <div class="option-item" [class.correct-option]="question.correctOption === 'A'">
+              <div class="option-label">A</div>
+              <div class="option-text">{{question.optionA}}</div>
+              <div *ngIf="question.correctOption === 'A'" class="correct-indicator">
+                <i nz-icon nzType="check-circle" nzTheme="fill"></i>
+              </div>
+            </div>
+            
+            <div class="option-item" [class.correct-option]="question.correctOption === 'B'">
+              <div class="option-label">B</div>
+              <div class="option-text">{{question.optionB}}</div>
+              <div *ngIf="question.correctOption === 'B'" class="correct-indicator">
+                <i nz-icon nzType="check-circle" nzTheme="fill"></i>
+              </div>
+            </div>
+            
+            <div class="option-item" [class.correct-option]="question.correctOption === 'C'">
+              <div class="option-label">C</div>
+              <div class="option-text">{{question.optionC}}</div>
+              <div *ngIf="question.correctOption === 'C'" class="correct-indicator">
+                <i nz-icon nzType="check-circle" nzTheme="fill"></i>
+              </div>
+            </div>
+            
+            <div class="option-item" [class.correct-option]="question.correctOption === 'D'">
+              <div class="option-label">D</div>
+              <div class="option-text">{{question.optionD}}</div>
+              <div *ngIf="question.correctOption === 'D'" class="correct-indicator">
+                <i nz-icon nzType="check-circle" nzTheme="fill"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

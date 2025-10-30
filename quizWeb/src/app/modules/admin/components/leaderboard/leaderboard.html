@@ -1,0 +1,111 @@
+<div class="leaderboard-container">
+  <!-- Header -->
+  <div class="leaderboard-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i nz-icon nzType="trophy" nzTheme="outline"></i>
+        Test Leaderboard
+      </h1>
+      <p class="page-subtitle">Top performers for this quiz</p>
+    </div>
+    <div class="header-actions">
+      <button nz-button nzType="default" (click)="loadLeaderboard()" [nzLoading]="isLoading">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+        Refresh
+      </button>
+      <button nz-button nzType="primary" (click)="exportLeaderboard()">
+        <i nz-icon nzType="download" nzTheme="outline"></i>
+        Export CSV
+      </button>
+      <button nz-button nzType="default" (click)="showAllResults()">
+        <i nz-icon nzType="database" nzTheme="outline"></i>
+        Debug: Show All Results
+      </button>
+      <button nz-button nzType="dashed" (click)="createSampleData()">
+        <i nz-icon nzType="experiment" nzTheme="outline"></i>
+        Sample Data Info
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading leaderboard...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Leaderboard Content -->
+  <div *ngIf="!isLoading" class="leaderboard-content">
+    <!-- Empty State -->
+    <div *ngIf="leaderboardData.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i nz-icon nzType="trophy" nzTheme="outline"></i>
+      </div>
+      <h3 class="empty-title">No Results Yet</h3>
+      <p class="empty-description">
+        No students have completed this test yet. 
+        <br><br><strong>To see results here:</strong>
+        <br>1. Make sure the test has questions added
+        <br>2. Share the test code with students
+        <br>3. Students need to complete the entire test
+        <br><br><strong>Current Test ID: {{testId}}</strong>
+      </p>
+      <button nz-button nzType="primary" (click)="loadLeaderboard()">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+        Refresh Results
+      </button>
+    </div>
+
+    <!-- Rankings Table -->
+    <div *ngIf="leaderboardData.length > 0" class="rankings-table">
+      <nz-table #basicTable [nzData]="leaderboardData" nzSize="middle">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Student</th>
+            <th>Score</th>
+            <th>Correct Answers</th>
+            <th>Accuracy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of basicTable.data" [class.top-performer]="item.rank <= 3">
+            <td>
+              <span class="rank-badge" [class.gold]="item.rank === 1" [class.silver]="item.rank === 2" [class.bronze]="item.rank === 3">
+                {{item.badge}} {{item.rank}}
+              </span>
+            </td>
+            <td>
+              <div class="student-info">
+                <nz-avatar nzSize="small" [nzText]="item.userName?.charAt(0) || 'U'"></nz-avatar>
+                <span class="student-name">{{item.userName || 'Unknown Student'}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-display">
+                <div class="score-percentage" [style.color]="getScoreColor(item.percentage)">
+                  {{item.percentage}}%
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" 
+                       [style.width.%]="item.percentage"
+                       [style.background-color]="getScoreColor(item.percentage)">
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="fraction">{{item.correctAnswers}}/{{item.totalQuestions}}</span>
+            </td>
+            <td>
+              <nz-tag [nzColor]="getScoreColor(item.percentage)">
+                {{(item.correctAnswers / item.totalQuestions * 100).toFixed(1)}}%
+              </nz-tag>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>

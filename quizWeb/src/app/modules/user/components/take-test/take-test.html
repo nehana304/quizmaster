@@ -1,0 +1,108 @@
+<div class="test-container fade-in" (keydown)="onKeyDown($event)" tabindex="0">
+  <!-- Header Section -->
+  <div class="test-header">
+    <div class="test-info">
+      <h1 class="test-title">Quiz in Progress</h1>
+      <div class="progress-info">
+        <span class="question-counter">Question {{currentQuestionIndex}} of {{questions.length}}</span>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progressPercentage"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="timer-section">
+      <button nz-button nzType="text" nzSize="small" (click)="toggleSound()" class="sound-toggle">
+        <i nz-icon [nzType]="isSoundMuted ? 'sound' : 'sound-fill'" nzTheme="outline"></i>
+      </button>
+      <div class="timer" [class.timer-warning]="timeRemaining <= 300" [class.timer-critical]="timeRemaining <= 60">
+        <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+        <span class="timer-text">{{ getFormattedTime() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading test questions...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Questions Section -->
+  <div *ngIf="!isLoading" class="questions-container">
+    <form (ngSubmit)="submitAnswers()" #testForm="ngForm">
+      <div class="question-card slide-in-left" *ngFor="let question of questions; let i = index; trackBy: trackByQuestionId">
+        <div class="question-header">
+          <div class="question-number">Q{{i + 1}}</div>
+          <div class="question-status" [class.answered]="selectedAnswers[question.id]">
+            <i nz-icon [nzType]="selectedAnswers[question.id] ? 'check-circle' : 'clock-circle'" 
+               [nzTheme]="selectedAnswers[question.id] ? 'fill' : 'outline'"></i>
+          </div>
+        </div>
+        
+        <div class="question-content">
+          <h3 class="question-text">{{ question.content }}</h3>
+          
+          <div class="options-container">
+            <div class="option-item" 
+                 *ngFor="let option of questionOptions[question.id]; let optIndex = index; trackBy: trackByOption"
+                 [class.selected]="selectedAnswers[question.id] === option.value"
+                 [attr.data-question-id]="question.id"
+                 [attr.data-option-value]="option.value">
+              <label class="option-label" (click)="onAnswerChange(question.id, option.value)">
+                <input type="radio" 
+                       [name]="'question' + question.id" 
+                       [value]="option.value"
+                       [checked]="selectedAnswers[question.id] === option.value"
+                       (change)="onAnswerChange(question.id, option.value)"
+                       (click)="onAnswerChange(question.id, option.value)"
+                       class="option-input"/>
+                <div class="option-content">
+                  <div class="option-letter">{{option.letter}}</div>
+                  <div class="option-text">{{option.value}}</div>
+                </div>
+                <div class="option-indicator">
+                  <i nz-icon nzType="check" nzTheme="outline"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Section -->
+      <div class="submit-section">
+        <div class="submit-info">
+          <div class="answered-count">
+            <i nz-icon nzType="check-circle" nzTheme="fill"></i>
+            <span>{{answeredCount}} of {{questions.length}} questions answered</span>
+          </div>
+          <div class="submit-warning" *ngIf="answeredCount < questions.length">
+            <i nz-icon nzType="exclamation-circle" nzTheme="fill"></i>
+            <span>{{questions.length - answeredCount}} questions remaining</span>
+          </div>
+        </div>
+        
+        <div class="submit-actions">
+          <button nz-button nzType="default" nzSize="large" type="button" (click)="reviewAnswers()">
+            <i nz-icon nzType="eye" nzTheme="outline"></i>
+            Review Answers
+          </button>
+          <button nz-button nzType="primary" nzSize="large" type="button" 
+                  [nzLoading]="isSubmitting"
+                  [disabled]="isSubmitting"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Are you sure you want to submit your test?"
+                  nzPopconfirmPlacement="top"
+                  (nzOnConfirm)="confirmSubmit()"
+                  (click)="$event.stopPropagation()">
+            <i nz-icon nzType="send" nzTheme="outline"></i>
+            Submit Test
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

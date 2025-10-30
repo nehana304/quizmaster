@@ -1,0 +1,119 @@
+
+<div class="test-results-container">
+  <!-- Header Section -->
+  <div class="results-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Test Results Overview</h1>
+        <p class="page-subtitle">Monitor student performance and quiz analytics</p>
+      </div>
+      <div class="header-actions">
+        <button nz-button nzType="default" routerLink="/admin/dashboard">
+          <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+          Back to Dashboard
+        </button>
+        <button nz-button nzType="primary" (click)="getTestResults()" [nzLoading]="isLoading">
+          <i nz-icon nzType="reload" nzTheme="outline"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <nz-spin nzSize="large" nzTip="Loading test results...">
+      <div class="loading-content"></div>
+    </nz-spin>
+  </div>
+
+  <!-- Results Content -->
+  <div *ngIf="!isLoading" class="results-content">
+    <!-- Empty State -->
+    <div *ngIf="resultsData.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <i nz-icon nzType="bar-chart" nzTheme="outline"></i>
+      </div>
+      <h3 class="empty-title">No Test Results Found</h3>
+      <p class="empty-description">No students have completed any tests yet. Results will appear here once tests are submitted.</p>
+      <button nz-button nzType="primary" routerLink="/admin/dashboard">
+        <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+        Back to Dashboard
+      </button>
+    </div>
+
+    <!-- Results Table -->
+    <div *ngIf="resultsData.length > 0" class="table-container">
+      <nz-table #basicTable [nzData]="resultsData" [nzPageSize]="10" [nzShowPagination]="resultsData.length > 10">
+        <thead>
+          <tr>
+            <th nzWidth="25%">Test Name</th>
+            <th nzWidth="20%">Student Name</th>
+            <th nzWidth="15%" nzAlign="center">Total Questions</th>
+            <th nzWidth="15%" nzAlign="center">Correct Answers</th>
+            <th nzWidth="15%" nzAlign="center">Score</th>
+            <th nzWidth="10%" nzAlign="center">Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data; trackBy: trackByIndex">
+            <td>
+              <div class="test-name">
+                <i nz-icon nzType="file-text" nzTheme="outline"></i>
+                <span>{{data.testName || 'Unnamed Test'}}</span>
+              </div>
+            </td>
+            <td>
+              <div class="user-name">
+                <i nz-icon nzType="user" nzTheme="outline"></i>
+                <span>{{data.userName || 'Unknown User'}}</span>
+              </div>
+            </td>
+            <td nzAlign="center">
+              <nz-tag nzColor="blue">{{data.totalQuestions || 0}}</nz-tag>
+            </td>
+            <td nzAlign="center">
+              <nz-tag nzColor="green">{{data.correctAnswers || 0}}</nz-tag>
+            </td>
+            <td nzAlign="center">
+              <div class="score-cell">
+                <span class="percentage" [style.color]="getScoreColor(data.percentage || 0)">
+                  {{data.percentage || 0}}%
+                </span>
+              </div>
+            </td>
+            <td nzAlign="center">
+              <nz-tag [nzColor]="getScoreColor(data.percentage || 0)">
+                {{getGrade(data.percentage || 0)}}
+              </nz-tag>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <!-- Summary Stats -->
+      <div class="summary-stats">
+        <div class="stat-card">
+          <div class="stat-value">{{getTotalAttempts()}}</div>
+          <div class="stat-label">Total Attempts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getUniqueStudents()}}</div>
+          <div class="stat-label">Unique Students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getPassedCount()}}</div>
+          <div class="stat-label">Students Passed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getFailedCount()}}</div>
+          <div class="stat-label">Students Failed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{getAverageScore()}}%</div>
+          <div class="stat-label">Average Score</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

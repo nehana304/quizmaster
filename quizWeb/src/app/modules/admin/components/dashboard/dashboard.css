@@ -1,0 +1,670 @@
+/* Admin Dashboard Container */
+.admin-dashboard-container {
+  min-height: calc(100vh - 75px);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+}
+
+/* Header Section */
+.dashboard-header {
+  margin-bottom: 3rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header-text {
+  flex: 1;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #262626;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.loading-content {
+  width: 100px;
+  height: 100px;
+}
+
+/* Tests Container */
+.tests-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #d9d9d9;
+  margin-bottom: 1.5rem;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 0.5rem;
+}
+
+.empty-description {
+  color: #8c8c8c;
+  margin-bottom: 2rem;
+}
+
+/* Tests Grid */
+.tests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+/* Test Card */
+.test-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.test-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Test Card Header */
+.test-card-header {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.test-title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.test-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* Test Card Body */
+.test-card-body {
+  padding: 1rem 1.5rem;
+}
+
+.test-description {
+  color: #8c8c8c;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.test-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #595959;
+  font-size: 0.9rem;
+}
+
+.meta-item i {
+  color: #1890ff;
+}
+
+/* Test Card Actions */
+.test-card-actions {
+  padding: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.primary-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.status-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 40px;
+}
+
+.primary-actions button {
+  flex: 1;
+  min-width: 120px;
+  height: 36px; /* Consistent height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Status Colors */
+.test-card[data-status="CANCELLED"] {
+  border-left: 4px solid #ff4d4f;
+}
+
+.test-card[data-status="ACTIVE"] {
+  border-left: 4px solid #52c41a;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding: 1rem;
+  }
+  
+  .dashboard-title {
+    font-size: 2rem;
+  }
+  
+  .tests-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .test-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .primary-actions {
+    flex-direction: column;
+  }
+  
+  .primary-actions button {
+    width: 100%;
+  }
+  
+  .test-card-actions {
+    flex-direction: column;
+  }
+  
+  .status-actions {
+    justify-content: stretch;
+  }
+  
+  .status-actions button {
+    width: 100%;
+  }
+}
+
+/* Animation */
+.test-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}/* Test
+ Code Styles */
+.test-code-item {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.test-code {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #0369a1;
+  background: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #bae6fd;
+}/* Admi
+n Dashboard Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* Apply animations */
+.admin-dashboard-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.dashboard-header {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.header-actions button {
+  animation: slideInRight 0.6s ease-out;
+  animation-fill-mode: both;
+  transition: all 0.3s ease;
+}
+
+.header-actions button:nth-child(1) { animation-delay: 0.3s; }
+.header-actions button:nth-child(2) { animation-delay: 0.4s; }
+
+.header-actions button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(24, 144, 255, 0.3);
+}
+
+.test-card {
+  animation: scaleIn 0.6s ease-out;
+  animation-fill-mode: both;
+  transition: all 0.3s ease;
+}
+
+.test-card:nth-child(1) { animation-delay: 0.1s; }
+.test-card:nth-child(2) { animation-delay: 0.2s; }
+.test-card:nth-child(3) { animation-delay: 0.3s; }
+.test-card:nth-child(4) { animation-delay: 0.4s; }
+.test-card:nth-child(5) { animation-delay: 0.5s; }
+
+.test-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.test-card-actions button {
+  transition: all 0.3s ease;
+}
+
+.test-card-actions button:hover {
+  transform: scale(1.05);
+  animation: pulse 0.5s ease-out;
+}
+
+/* Test code copy animation */
+.test-code-item button:hover {
+  animation: bounce 0.6s ease-out;
+}
+
+/* Status badge animations */
+.nz-tag {
+  transition: all 0.3s ease;
+}
+
+.test-card:hover .nz-tag {
+  transform: scale(1.1);
+}
+
+/* Loading animations */
+.loading-container {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* Empty state animations */
+.empty-state {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.empty-icon {
+  animation: bounce 2s infinite;
+}
+
+/* Meta item hover effects */
+.meta-item {
+  transition: all 0.3s ease;
+}
+
+.test-card:hover .meta-item {
+  transform: translateX(3px);
+}
+
+/* Button group animations */
+.primary-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.primary-actions button {
+  animation: slideInRight 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.primary-actions button:nth-child(1) { animation-delay: 0.1s; }
+.primary-actions button:nth-child(2) { animation-delay: 0.2s; }
+.primary-actions button:nth-child(3) { animation-delay: 0.3s; }
+
+.status-actions button {
+  animation: slideInRight 0.5s ease-out;
+  animation-delay: 0.4s;
+  animation-fill-mode: both;
+}
+
+/* Ensure all buttons have consistent styling */
+.test-card-actions button {
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.test-card-actions button i {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Fix any potential text alignment issues */
+.test-card-actions button span {
+  line-height: 1.2;
+}
+
+/* Hover effects for interactive elements */
+.test-title {
+  transition: all 0.3s ease;
+}
+
+.test-card:hover .test-title {
+  color: #1890ff;
+  transform: translateX(5px);
+}
+
+/* Dashboard title animation */
+.dashboard-title {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.dashboard-subtitle {
+  animation: slideInLeft 0.8s ease-out;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+/* Responsive animation adjustments */
+@media (max-width: 768px) {
+  .test-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .header-actions button:hover {
+    transform: translateY(-2px);
+  }
+}/* 
+Cancelled Test Actions */
+.cancelled-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cancelled-actions button {
+  flex: 1;
+  min-width: 140px;
+  height: 36px; /* Ensure consistent height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Ensure both buttons have same styling */
+.cancelled-actions button i {
+  font-size: 14px;
+}
+
+/* Status actions container improvements */
+.status-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 40px;
+}
+
+/* Single button in status actions */
+.status-actions > button {
+  min-width: 140px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .cancelled-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .cancelled-actions button {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .status-actions {
+    justify-content: stretch;
+  }
+  
+  .status-actions > button {
+    width: 100%;
+    min-width: unset;
+  }
+}
+/* Specific styling for permanent remove button */
+.cancelled-actions button[nz-popconfirm] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ensure danger buttons have proper styling */
+button[nzDanger] {
+  background-color: white !important;
+  border-color: #ff4d4f !important;
+  color: #ff4d4f !important;
+  font-weight: 500 !important;
+}
+
+button[nzDanger]:hover {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: white !important;
+}
+
+button[nzDanger]:focus {
+  background-color: white !important;
+  border-color: #ff4d4f !important;
+  color: #ff4d4f !important;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2) !important;
+}
+
+/* Fix button content alignment */
+.test-card-actions button {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.test-card-actions button > * {
+  vertical-align: middle;
+}
+
+/* Ensure consistent button spacing */
+.cancelled-actions {
+  margin-top: 0;
+}
+
+/* Fix any flex alignment issues */
+.test-card-actions {
+  align-items: stretch;
+}
+
+.primary-actions,
+.status-actions,
+.cancelled-actions {
+  align-items: center;
+}/* 
+Specific styling for permanent remove button text visibility */
+.cancelled-actions button[nzDanger] {
+  background-color: white !important;
+  border: 2px solid #ff4d4f !important;
+  color: #ff4d4f !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.cancelled-actions button[nzDanger] i {
+  color: #ff4d4f !important;
+  font-size: 14px !important;
+}
+
+.cancelled-actions button[nzDanger]:hover {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3) !important;
+}
+
+.cancelled-actions button[nzDanger]:hover i {
+  color: white !important;
+}
+
+/* Ensure text is never transparent or hidden */
+.cancelled-actions button[nzDanger] span,
+.cancelled-actions button[nzDanger] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Override any Ant Design default styles that might hide text */
+.cancelled-actions button[nzDanger].ant-btn {
+  color: #ff4d4f !important;
+  background-color: white !important;
+  border-color: #ff4d4f !important;
+}
+
+.cancelled-actions button[nzDanger].ant-btn:hover {
+  color: white !important;
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+}

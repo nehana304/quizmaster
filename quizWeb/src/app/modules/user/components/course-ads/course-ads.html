@@ -1,0 +1,95 @@
+<div class="course-ads-container">
+  <!-- Header -->
+  <div class="ads-header">
+    <h3 class="ads-title">
+      <i nz-icon nzType="book" nzTheme="outline"></i>
+      Featured Courses
+    </h3>
+    <p class="ads-subtitle">Enhance your skills with our top-rated courses</p>
+  </div>
+
+  <!-- Promotional Banner -->
+  <div class="promo-banner">
+    <div class="promo-content">
+      <span class="promo-text">🎉 Limited Time Offer: Up to 60% OFF on all courses!</span>
+      <span class="promo-code">Use code: <strong>QUIZ2024</strong></span>
+    </div>
+  </div>
+
+  <!-- Courses Carousel -->
+  <div class="courses-carousel" 
+       (mouseenter)="pauseAutoScroll()" 
+       (mouseleave)="resumeAutoScroll()">
+    
+    <!-- Navigation Buttons -->
+    <button class="nav-btn prev-btn" (click)="scrollPrev()">
+      <i nz-icon nzType="left" nzTheme="outline"></i>
+    </button>
+    
+    <div class="courses-scroll-container">
+      <div class="courses-track">
+        <div class="course-card" *ngFor="let course of courses">
+          <div class="course-image">
+            <img [src]="course.image" [alt]="course.title" />
+            <div class="discount-badge">{{course.discount}}</div>
+            <div class="category-tag">{{course.category}}</div>
+          </div>
+          
+          <div class="course-content">
+            <div class="course-header">
+              <h4 class="course-title">{{course.title}}</h4>
+              <p class="course-instructor">by {{course.instructor}}</p>
+              
+              <div class="course-rating">
+                <div class="stars">
+                  <span *ngFor="let star of getStarArray(course.rating); let i = index" 
+                        class="star" 
+                        [class.filled]="star"
+                        [class.half]="hasHalfStar(course.rating, i)">
+                    ★
+                  </span>
+                </div>
+                <span class="rating-text">{{course.rating}}</span>
+              </div>
+            </div>
+            
+            <div class="course-body">
+              <p class="course-description">{{course.description}}</p>
+              
+              <div class="course-meta">
+                <span class="level">{{course.level}}</span>
+                <span class="duration">{{course.duration}}</span>
+              </div>
+              
+              <div class="course-info">
+                <div class="info-item">
+                  <i nz-icon nzType="user" nzTheme="outline"></i>
+                  <span>{{course.students | number}} enrolled</span>
+                </div>
+                <div class="info-item">
+                  <i nz-icon nzType="book" nzTheme="outline"></i>
+                  <span>{{course.category}}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="course-pricing">
+              <span class="current-price">₹{{course.price}}</span>
+              <span class="original-price">₹{{course.originalPrice}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <button class="nav-btn next-btn" (click)="scrollNext()">
+      <i nz-icon nzType="right" nzTheme="outline"></i>
+    </button>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div class="bottom-cta">
+    <p class="cta-text">Ready to advance your career? Explore our complete course catalog!</p>
+    <p class="cta-info">Visit our learning platform to discover hundreds of courses across various technologies and skill levels.</p>
+  </div>
+</div>

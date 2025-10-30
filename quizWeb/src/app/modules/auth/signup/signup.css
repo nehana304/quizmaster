@@ -1,0 +1,241 @@
+/* Main container */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+}
+
+/* Card container */
+.auth-card {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Left side - Form */
+.login-form-container {
+  flex: 1;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.login-form h1 {
+  color: #1a202c;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #718096;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+/* Form elements */
+nz-form-item {
+  margin-bottom: 1.5rem;
+}
+
+nz-input-group {
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s;
+}
+
+nz-input-group:hover {
+  border-color: #a0aec0;
+}
+
+input, nz-select {
+  width: 100%;
+  height: 100% !important;
+  font-size: 0.9375rem;
+}
+
+/* Password toggle */
+.password-toggle {
+  cursor: pointer;
+  color: #a0aec0;
+  transition: color 0.3s;
+}
+
+.password-toggle:hover {
+  color: #4f46e5;
+}
+
+/* Role selection */
+.role-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.role-option i {
+  font-size: 1.5rem;
+  margin-right: 12px;
+  color: #4f46e5;
+}
+
+.role-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.role-title {
+  font-weight: 500;
+  color: #1a202c;
+}
+
+.role-description {
+  font-size: 0.8125rem;
+  color: #718096;
+  margin-top: 2px;
+}
+
+/* Terms and conditions */
+.terms-link {
+  color: #4f46e5;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.terms-link:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+/* Submit button */
+button[nz-button] {
+  height: 48px;
+  font-weight: 500;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+/* Register link */
+.register-now {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #718096;
+  font-size: 0.9375rem;
+}
+
+.register-now a {
+  color: #4f46e5;
+  font-weight: 500;
+  margin-left: 0.25rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.register-now a:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+/* Error messages */
+.ant-form-item-explain-error {
+  font-size: 0.8125rem;
+  margin-top: 0.25rem;
+  color: #e53e3e;
+}
+
+/* Right side - Illustration */
+.auth-illustration {
+  flex: 1;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  padding: 3rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.illustration-content {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.illustration-content h1 {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: white;
+}
+
+.illustration-content p {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.illustration-img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 2rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-form {
+  animation: fadeIn 0.4s ease-out forwards;
+  position: relative;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .auth-card {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .auth-illustration {
+    display: none;
+  }
+
+  .login-form-container {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .login-form h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* System Status */
+.system-status {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--gray-50);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+}
+
+.system-status nz-alert {
+  margin-bottom: 1rem;
+}

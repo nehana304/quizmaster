@@ -1,0 +1,192 @@
+
+<div class="dashboard-container fade-in">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Welcome to QuizMaster</h1>
+    <p class="dashboard-subtitle">
+      Discover and take engaging quizzes to test your knowledge and learn something new every day.
+    </p>
+    
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button nz-button nzType="primary" nzSize="large" (click)="getAllTests()" [nzLoading]="isLoading" class="bounce-hover">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+        Refresh Tests
+      </button>
+    </div>
+  </div>
+
+  <!-- Course Advertisement Section -->
+  <app-course-ads></app-course-ads>
+
+  <!-- Stats Section - Always visible -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card scale-in" style="animation-delay: 0.1s;">
+        <div class="stat-icon primary">
+          <i nz-icon nzType="fire" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getBestScore()}}</div>
+        <div class="stat-label">Best Score</div>
+      </div>
+      
+      <div class="stat-card scale-in" style="animation-delay: 0.2s;">
+        <div class="stat-icon secondary">
+          <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getCompletedTestsCount()}}</div>
+        <div class="stat-label">Tests Completed</div>
+      </div>
+      
+      <div class="stat-card scale-in" style="animation-delay: 0.3s;">
+        <div class="stat-icon success">
+          <i nz-icon nzType="trophy" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getAverageScore()}}</div>
+        <div class="stat-label">Average Score</div>
+      </div>
+      
+      <div class="stat-card scale-in clickable" style="animation-delay: 0.4s;" (click)="viewDetailedStats()">
+        <div class="stat-icon warning">
+          <i nz-icon nzType="star" nzTheme="outline"></i>
+        </div>
+        <div class="stat-value">{{getTotalPoints()}}</div>
+        <div class="stat-label">Total Points</div>
+        <div class="stat-action">
+          <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Join Test Section -->
+  <div class="join-test-section">
+    <div class="join-test-card">
+      <div class="join-test-header">
+        <h2 class="section-title">Join a Test</h2>
+        <p class="section-subtitle">Enter the test code provided by your instructor to access the quiz</p>
+      </div>
+      
+      <div class="join-test-form">
+        <nz-input-group nzSize="large" class="test-code-input">
+          <input type="text" 
+                 nz-input 
+                 placeholder="Enter test code (e.g., ABC12345)" 
+                 [(ngModel)]="testCode" 
+                 (keyup.enter)="joinTest()"
+                 (paste)="onTestCodePaste($event)"
+                 style="text-transform: uppercase;" />
+          <button nz-button nzType="default" nzSize="large" (click)="pasteTestCode()" title="Paste from clipboard">
+            <i nz-icon nzType="snippets" nzTheme="outline"></i>
+          </button>
+          <button nz-button nzType="primary" nzSize="large" (click)="joinTest()" [nzLoading]="isJoining">
+            <i nz-icon nzType="login" nzTheme="outline"></i>
+            Join Test
+          </button>
+        </nz-input-group>
+        
+        <div class="join-test-help">
+          <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+          <span>Ask your instructor for the test code to access the quiz. You can type it or paste it from your clipboard.</span>
+          <span *ngIf="testCode.length > 0" class="test-code-length">
+            ({{testCode.length}} characters)
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Available Tests Section (Hidden by default, only shown if needed) -->
+  <div class="tests-section" *ngIf="showAvailableTests">
+    <div class="section-header">
+      <div class="section-title-area">
+        <h2 class="section-title">Available Tests</h2>
+        <p class="search-results-text">{{getSearchResultsText()}}</p>
+      </div>
+      <div class="section-actions">
+        <nz-input-group nzSearch nzSize="large" style="width: 300px;">
+          <input type="text" 
+                 nz-input 
+                 placeholder="Search tests..." 
+                 [(ngModel)]="searchTerm" 
+                 (input)="onSearchChange()"
+                 (keyup.enter)="onSearchButtonClick()" />
+          <button nz-button nzType="primary" nzSearch (click)="onSearchButtonClick()">
+            <i nz-icon nzType="search"></i>
+          </button>
+        </nz-input-group>
+        <button nz-button nzType="default" (click)="getAllTests()" [nzLoading]="isLoading">
+          <i nz-icon nzType="reload" nzTheme="outline"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <nz-spin nzSize="large" nzTip="Loading tests...">
+        <div class="loading-content"></div>
+      </nz-spin>
+    </div>
+
+    <!-- Tests Grid Container - Always visible -->
+    <div *ngIf="!isLoading" class="tests-container">
+      <!-- Empty State -->
+      <div *ngIf="filteredTests.length === 0" class="empty-state">
+        <div class="empty-icon">
+          <i nz-icon nzType="file-text" nzTheme="outline"></i>
+        </div>
+        <h3 class="empty-title">{{tests === null ? 'Loading...' : (searchTerm ? 'No tests match your search' : 'No Tests Available')}}</h3>
+        <p class="empty-description">
+          {{searchTerm ? 'Try adjusting your search terms or clear the search to see all tests.' : 'There are currently no tests available. Check back later for new content!'}}
+        </p>
+        <div class="empty-actions">
+          <button *ngIf="searchTerm" nz-button nzType="default" (click)="clearSearch()">
+            <i nz-icon nzType="clear" nzTheme="outline"></i>
+            Clear Search
+          </button>
+          <button nz-button nzType="primary" (click)="getAllTests()">
+            <i nz-icon nzType="reload" nzTheme="outline"></i>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Tests Grid -->
+      <div *ngIf="filteredTests.length > 0" class="tests-grid">
+        <div *ngFor="let test of filteredTests; trackBy: trackByTestId" class="test-card slide-in">
+          <div class="test-card-header">
+            <h3 class="test-title">{{test.title}}</h3>
+            <p class="test-description">{{test.description}}</p>
+          </div>
+          
+          <div class="test-card-body">
+            <div class="test-meta">
+              <div class="meta-item">
+                <i nz-icon nzType="clock-circle" nzTheme="outline" class="meta-icon"></i>
+                <span>{{getFormattedTime(test.time)}}</span>
+              </div>
+              <div class="meta-item">
+                <i nz-icon nzType="question-circle" nzTheme="outline" class="meta-icon"></i>
+                <span>{{test.questions?.length || 0}} Questions</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="test-card-footer">
+            <span class="test-difficulty" [ngClass]="'difficulty-' + getDifficultyLevel(test)">
+              {{getDifficultyLevel(test) | titlecase}}
+            </span>
+            <button 
+              class="start-test-btn"
+              (click)="startTest(test.id)"
+              [disabled]="false">
+              <i nz-icon nzType="play-circle" nzTheme="outline"></i>
+              Start Test
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

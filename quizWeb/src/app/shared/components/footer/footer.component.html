@@ -1,0 +1,77 @@
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <!-- Brand and Description -->
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="assets/images/logo.svg" alt="QuizMaster" class="logo-img">
+          <span class="logo-text">QuizMaster</span>
+        </div>
+        <p class="footer-description">
+          Empowering education through interactive quizzes and assessments. 
+          Join thousands of users in enhancing learning experiences.
+        </p>
+        <div class="social-links">
+          @for (social of socialLinks; track social.icon) {
+            <a [href]="social.url" target="_blank" rel="noopener noreferrer" class="social-link">
+              <i nz-icon [nzType]="social.icon" nzTheme="outline"></i>
+              <span class="sr-only">{{ social.label }}</span>
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links">
+          @for (link of quickLinks; track link.path) {
+            <li>
+              <a [routerLink]="link.path" class="footer-link">
+                {{ link.label }}
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="footer-section">
+        <h3 class="footer-heading">Contact Us</h3>
+        <ul class="contact-info">
+          <li>
+            <i nz-icon nzType="mail" nzTheme="outline"></i>
+            <span>contact@quizmaster.com</span>
+          </li>
+          <li>
+            <i nz-icon nzType="phone" nzTheme="outline"></i>
+            <span>+1 (555) 123-4567</span>
+          </li>
+          <li>
+            <i nz-icon nzType="environment" nzTheme="outline"></i>
+            <span>123 Learning St, Education City, 10001</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-section">
+        <h3 class="footer-heading">Newsletter</h3>
+        <p class="newsletter-text">Subscribe to our newsletter for updates and news.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email address" class="newsletter-input">
+          <button class="newsletter-button">
+            <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <p class="copyright">
+        &copy; {{ currentYear }} QuizMaster. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
