@@ -83,6 +83,11 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           
+          # Create target directory on EC2 before copying
+          echo "[INFO]: Creating target directory on EC2..."
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "sudo mkdir -p /opt/quizmaster/app && sudo chown -R ${EC2_USER}:${EC2_USER} /opt/quizmaster"
+
+          
           # Copy docker-compose.yml to EC2
           scp -i private_key.pem -o StrictHostKeyChecking=no docker-compose.yml ${EC2_USER}@${EC2_HOST}:/opt/quizmaster/app/
           
