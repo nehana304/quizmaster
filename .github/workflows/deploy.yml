@@ -128,8 +128,7 @@ jobs:
             mkdir -p /opt/quizmaster/app/db_init
             cd /opt/quizmaster/app/db_init
             curl -O https://raw.githubusercontent.com/nehana304/quizmaster/refs/heads/main/db_init/dump.sql
-            ls -l /opt/quizmaster/app/db_init
-            echo "[SUCCESS]: MySQL dump updated successfully.
+            echo "[SUCCESS]: MySQL dump updated successfully."
 
             # Navigate to app directory
             cd /opt/quizmaster/app
