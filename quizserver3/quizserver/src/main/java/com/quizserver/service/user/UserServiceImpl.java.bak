@@ -1,0 +1,47 @@
+package com.quizserver.service.user;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.quizserver.entities.User;
+import com.quizserver.enums.UserRole;
+import com.quizserver.repository.UserRepository;
+
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // ✅ Check if a user with given username exists
+    public Boolean hasUserWithUsername(String username) {
+        return userRepository.findByName(username).isPresent();
+    }
+
+    // ✅ Create user (either USER or ADMIN)
+    public User createUser(User user) {
+        // Default to USER if no role specified
+        if (user.getRole() == null) {
+            user.setRole(UserRole.USER);
+        }
+        return userRepository.save(user);
+    }
+
+    // ✅ Login using username & password
+    public User login(User user) {
+        Optional<User> optionalUser = userRepository.findByName(user.getName());
+        if (optionalUser.isPresent() && user.getPassword().equals(optionalUser.get().getPassword())) {
+            return optionalUser.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Boolean hasUserWithEmail(String email) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hasUserWithEmail'");
+    }
+}

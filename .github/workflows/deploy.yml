@@ -1,0 +1,149 @@
+name: Build and Deploy to EC2
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/quizmaster-backend
+  FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/quizmaster-frontend
+
+jobs:
+  # Build and Push Docker Images to Docker Hub
+  build-and-push:
+    name: Build and Push to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./quizserver3/quizserver/
+          file: ./quizserver3/quizserver/Dockerfile
+          push: true
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./quizWeb/
+          file: ./quizWeb/Dockerfile
+          push: true
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Image build summary
+        run: |
+          echo "[SUCCESS]: Docker images built and pushed successfully!"
+          echo "Backend: ${{ env.BACKEND_IMAGE }}:latest"
+          echo "Frontend: ${{ env.FRONTEND_IMAGE }}:latest"
+
+  # Deploy to EC2
+  deploy:
+    name: Deploy to EC2
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ubuntu
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          BACKEND_IMAGE: ${{ env.BACKEND_IMAGE }}
+          FRONTEND_IMAGE: ${{ env.FRONTEND_IMAGE }}
+        run: |
+          # Save SSH key
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          
+          # Copy docker-compose.yml to EC2
+          scp -i private_key.pem -o StrictHostKeyChecking=no docker-compose.yml ${EC2_USER}@${EC2_HOST}:/opt/quizmaster/app/
+          
+          # SSH and deploy
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << ENDSSH
+            set -e
+            
+            echo "[INFO]: Starting deployment..."
+            
+            # Navigate to app directory
+            cd /opt/quizmaster/app
+            
+            # Set environment variables for docker-compose
+            export BACKEND_IMAGE="${BACKEND_IMAGE}:latest"
+            export FRONTEND_IMAGE="${FRONTEND_IMAGE}:latest"
+            
+            # Login to Docker Hub
+            echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+            
+            # Pull latest images
+            echo "[INFO]: Pulling latest images..."
+            docker pull \${BACKEND_IMAGE}
+            docker pull \${FRONTEND_IMAGE}
+            
+            # Stop existing containers
+            echo "[INFO]: Stopping existing containers..."
+            docker-compose down || true
+            
+            # Start new containers
+            echo "[INFO]:  Starting containers..."
+            docker-compose up -d
+            
+            # Wait for services to start
+            echo "[INFO]:  Waiting for services to start..."
+            sleep 20
+            
+            # Check container status
+            echo "[INFO]: Container status:"
+            docker-compose ps
+            
+            # Show logs
+            echo "[INFO]: Recent logs:"
+            docker-compose logs --tail=20
+            
+            # Clean up old images
+            echo "[INFO]: Cleaning up old images..."
+            docker image prune -af || true
+            
+            echo "[SUCCESS]:  Deployment completed successfully!"
+          ENDSSH
+          
+          # Clean up SSH key
+          rm -f private_key.pem
+
+      - name: Deployment summary
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "[SUCCESS]:  Deployment successful!"
+            echo "[INFO]: Frontend: http://${{ secrets.EC2_HOST }}:80"
+            echo "[INFO]: Backend API: http://${{ secrets.EC2_HOST }}:9090/"
+          else
+            echo "[ERROR]:  Deployment failed! Check logs above."
+          fi

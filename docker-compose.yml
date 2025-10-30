@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Database
+  mysql:
+    image: mysql:8.1
+    container_name: quizmaster-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Neha@3004sql
+      MYSQL_DATABASE: quiz_server_db3
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db_init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: nehana2/quizmaster-backend:latest
+    container_name: quizmaster-backend-server
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: quiz_server_db3
+      DB_USERNAME: root
+      DB_PASSWORD: Neha@3004sql
+      JWT_SECRET: a13abc0044076e7329c2b8e1d735bb9c743c4eb7fe1acc52a81f7f6840f1765a
+    ports:
+      - "9090:8080"
+    depends_on:
+      - mysql
+    networks:
+      - quizmaster-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: nehana2/quizmaster-frontend:latest
+    container_name: quizmaster-frontend-server
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - quizmaster-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  quizmaster-network:
+    driver: bridge
